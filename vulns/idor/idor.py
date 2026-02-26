@@ -11,7 +11,7 @@ def idor_login_api(request, app):
 
     username = form.get('username')
     password = form.get('password')
-    password = hashlib.md5(password.encode('utf-8')).hexdigest()
+    password = hashlib.scrypt(password.encode('utf-8'), salt=b'salt', n=16, r=8, p=1).hex()
 
     db_result = app.db_helper.execute_read(
         f"SELECT * FROM users WHERE username=:username AND password=:password",
